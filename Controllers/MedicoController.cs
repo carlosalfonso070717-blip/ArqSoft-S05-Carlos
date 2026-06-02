@@ -1,15 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Citas_App.Controllers
-{
-    public class MedicoController
-    {
-    }
-}
-﻿using CitasApp.Interfaces;
+using Citas_App.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CitasApp.Controllers
+namespace Citas_App.Controllers
 {
     public class MedicoController : Controller
     {

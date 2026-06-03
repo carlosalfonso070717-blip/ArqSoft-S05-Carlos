@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 1,
+    "Nombre": "Dr. Roberto",
+    "Apellido": "Martínez",
+    "Especialidad": "Cardiología",
+    "NumeroLicencia": "MED-001"
+  },
+  {
+    "Id": 2,
+    "Nombre": "Dra. Ana",
+    "Apellido": "Rodríguez",
+    "Especialidad": "Pediatría",
+    "NumeroLicencia": "MED-002"
+  },
+  {
+    "Id": 3,
+    "Nombre": "Dr. Luis",
+    "Apellido": "Fernández",
+    "Especialidad": "Neurología",
+    "NumeroLicencia": "MED-003"
+  },
+  {
+    "Id": 4,
+    "Nombre": "Dr. Pancho",
+    "Apellido": "Alcocer",
+    "Especialidad": "Pokemón",
+    "NumeroLicencia": "MED-004"
+  }
+]

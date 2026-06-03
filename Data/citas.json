@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 1,
+    "PacienteId": 1,
+    "MedicoId": 1,
+    "Fecha": "2026-01-16",
+    "Hora": "10:00:00",
+    "Motivo": "Consulta general",
+    "Estado": "Pendiente"
+  },
+  {
+    "Id": 2,
+    "PacienteId": 2,
+    "MedicoId": 2,
+    "Fecha": "2026-01-17",
+    "Hora": "11:30:00",
+    "Motivo": "Control pediátrico",
+    "Estado": "Confirmada"
+  },
+  {
+    "Id": 3,
+    "PacienteId": 1,
+    "MedicoId": 3,
+    "Fecha": "2026-01-18",
+    "Hora": "14:00:00",
+    "Motivo": "Evaluación neurológica",
+    "Estado": "Pendiente"
+  },
+  {
+    "Id": 4,
+    "PacienteId": 4,
+    "MedicoId": 4,
+    "Fecha": "2026-01-25",
+    "Hora": "16:00:00",
+    "Motivo": "Cazar Pokemones",
+    "Estado": "Confirmada"
+  }
+]

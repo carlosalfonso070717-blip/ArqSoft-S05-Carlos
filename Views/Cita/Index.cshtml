@@ -1,30 +1,194 @@
-@model List<Citas_App.Models.Cita>
-@using Citas_App.Models
-
+@model IEnumerable<Citas_App.Models.Cita>
 @{
-    var pacientes = ViewBag.Pacientes as List<Paciente>;
-    var medicos = ViewBag.Medicos as List<Medico>;
+    ViewData["Title"] = "Citas";
+    var pacientes = ViewBag.Pacientes as List<Citas_App.Models.Paciente>;
+    var medicos = ViewBag.Medicos as List<Citas_App.Models.Medico>;
+    var totalCitas = Model.Count();
+    var citasPendientes = Model.Count(c => c.Estado == "Pendiente");
+    var citasConfirmadas = Model.Count(c => c.Estado == "Confirmada");
+    var meses = new[] { "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" };
 }
 
-<h1>Agenda de citas</h1>
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Paciente</th>
-        <th>Médico</th>
-        <th>Motivo</th>
-        <th>Estado</th>
-    </tr>
-    @foreach (var c in Model)
-    {
-        <tr>
-            <td>@c.Fecha</td>
-            <td>@c.Hora</td>
-            <td>@(pacientes?.FirstOrDefault(p => p.Id == c.PacienteId)?.Nombre ?? "N/A")</td>
-            <td>@(medicos?.FirstOrDefault(m => m.Id == c.MedicoId)?.Nombre ?? "N/A")</td>
-            <td>@c.Motivo</td>
-            <td>@c.Estado</td>
-        </tr>
+<div class="page-header">
+    <h1>📅 Gestión de Citas Médicas</h1>
+    <p>Organiza y controla todas las citas programadas</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓ ¡Éxito!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Estadísticas -->
+<div class="stats-container">
+    <div class="stat-card">
+        <span class="stat-card-icon">📅</span>
+        <h2 class="stat-card-value">@totalCitas</h2>
+        <p class="stat-card-label">Total de Citas</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">⏳</span>
+        <h2 class="stat-card-value">@citasPendientes</h2>
+        <p class="stat-card-label">Pendientes</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">✅</span>
+        <h2 class="stat-card-value">@citasConfirmadas</h2>
+        <p class="stat-card-label">Confirmadas</p>
+    </div>
+</div>
+
+<!-- Barra de Búsqueda y Filtros -->
+<div class="search-bar-container">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar cita por paciente, médico o motivo..." onkeyup="filterCards()">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select id="statusFilter" class="form-select" onchange="filterCards()" style="padding: 1rem; border-radius: 12px; border: 2px solid #e2e8f0;">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">⏳ Pendiente</option>
+                <option value="confirmada">✅ Confirmada</option>
+                <option value="cancelada">❌ Cancelada</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" id="dateFilter" class="form-control" onchange="filterCards()" style="padding: 1rem; border-radius: 12px; border: 2px solid #e2e8f0;">
+        </div>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <!-- Grid de Cards de Citas -->
+    <div class="cards-grid" id="appointmentsGrid">
+        @foreach (var cita in Model.OrderBy(c => c.Fecha).ThenBy(c => c.Hora))
+        {
+            var paciente = pacientes?.FirstOrDefault(p => p.Id == cita.PacienteId);
+            var medico = medicos?.FirstOrDefault(m => m.Id == cita.MedicoId);
+            var mes = meses[cita.Fecha.Month - 1];
+
+            <div class="appointment-card" 
+                 data-search="@(paciente?.Nombre.ToLower()) @(paciente?.Apellido.ToLower()) @(medico?.Nombre.ToLower()) @(medico?.Apellido.ToLower()) @cita.Motivo.ToLower()"
+                 data-status="@cita.Estado.ToLower()"
+                 data-date="@cita.Fecha.ToString("yyyy-MM-dd")">
+
+                <div class="appointment-header">
+                    <div class="appointment-date">
+                        <div class="appointment-day">@cita.Fecha.Day</div>
+                        <div class="appointment-month">@mes</div>
+                    </div>
+                    @if (cita.Estado == "Pendiente")
+                    {
+                        <span class="badge-modern badge-pendiente">⏳ Pendiente</span>
+                    }
+                    else if (cita.Estado == "Confirmada")
+                    {
+                        <span class="badge-modern badge-confirmada">✅ Confirmada</span>
+                    }
+                    else
+                    {
+                        <span class="badge-modern badge-cancelada">❌ Cancelada</span>
+                    }
+                </div>
+
+                <div class="appointment-time">
+                    🕐 @cita.Hora.ToString(@"hh\:mm")
+                </div>
+
+                <div class="card-details mt-3">
+                    <div class="detail-item">
+                        <span class="detail-icon">👤</span>
+                        <span class="detail-text"><strong>Paciente:</strong> @(paciente?.Nombre) @(paciente?.Apellido)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">👨‍⚕️</span>
+                        <span class="detail-text"><strong>Médico:</strong> Dr. @(medico?.Nombre) @(medico?.Apellido)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🏥</span>
+                        <span class="detail-text"><strong>Especialidad:</strong> @(medico?.Especialidad)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">📋</span>
+                        <span class="detail-text"><strong>Motivo:</strong> @cita.Motivo</span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a asp-controller="Cita" asp-action="Index" class="btn btn-info btn-sm w-100">
+                        👁️ Ver Detalles Completos
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">📅</div>
+        <h3>No hay citas programadas</h3>
+        <p>Agenda la primera cita médica del sistema</p>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            ➕ Agendar Primera Cita
+        </a>
+    </div>
+}
+
+<!-- Floating Action Button -->
+<a asp-action="Create" class="fab" title="Nueva Cita">
+    ➕
+</a>
+
+@section Scripts {
+<script>
+    function filterCards() {
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+
+        const searchValue = searchInput.value.toLowerCase();
+        const statusValue = statusFilter.value.toLowerCase();
+        const dateValue = dateFilter.value;
+
+        const grid = document.getElementById('appointmentsGrid');
+        const cards = grid.getElementsByClassName('appointment-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const searchData = cards[i].getAttribute('data-search');
+            const statusData = cards[i].getAttribute('data-status');
+            const dateData = cards[i].getAttribute('data-date');
+
+            let showCard = true;
+
+            // Filtro de búsqueda
+            if (searchValue && searchData.indexOf(searchValue) === -1) {
+                showCard = false;
+            }
+
+            // Filtro de estado
+            if (statusValue && statusData !== statusValue) {
+                showCard = false;
+            }
+
+            // Filtro de fecha
+            if (dateValue && dateData !== dateValue) {
+                showCard = false;
+            }
+
+            if (showCard) {
+                cards[i].style.display = '';
+                cards[i].style.animation = 'fadeIn 0.3s ease';
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
     }
-</table>
+</script>
+}

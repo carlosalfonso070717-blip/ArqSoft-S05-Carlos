@@ -6,5 +6,6 @@ namespace Citas_App.Interfaces
     {
         List<Cita> ObtenerTodos();
         List<Cita> ObtenerPorPaciente(int pacienteId);
+        void Agregar(Cita cita);
     }
 }

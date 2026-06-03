@@ -1,19 +1,50 @@
 using Citas_App.Interfaces;
+using Citas_App.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Citas_App.Controllers
 {
     public class MedicoController : Controller
     {
-        private readonly IMedicoRepository _repo;
-        public MedicoController(IMedicoRepository repo) { _repo = repo; }
+        private readonly IMedicoRepository _repository;
 
-        public IActionResult Index() => View(_repo.ObtenerTodos());
+        public MedicoController(IMedicoRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public IActionResult Index()
+        {
+            var medicos = _repository.ObtenerTodos();
+            return View(medicos);
+        }
 
         public IActionResult Detalle(int id)
         {
-            var medico = _repo.ObtenerPorId(id);
-            return medico == null ? NotFound() : View(medico);
+            var medico = _repository.ObtenerPorId(id);
+            if (medico == null)
+                return NotFound();
+
+            return View(medico);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Medico medico)
+        {
+            if (ModelState.IsValid)
+            {
+                _repository.Agregar(medico);
+                TempData["SuccessMessage"] = "Médico registrado exitosamente.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(medico);
         }
     }
 }

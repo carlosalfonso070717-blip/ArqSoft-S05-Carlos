@@ -1,62 +1,181 @@
-﻿@{
+@{
     ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center mb-5">
-    <h1 class="display-4">
-        <i class="bi bi-hospital text-primary"></i> 
-        Sistema de Citas Médicas
-    </h1>
-    <p class="lead">Gestiona pacientes, médicos y citas de manera eficiente</p>
+<div class="page-header">
+    <h1>⚕️ Bienvenido a MediApp</h1>
+    <p>Sistema Integral de Gestión de Citas Médicas - Tu solución completa para administración médica</p>
 </div>
 
+<!-- Hero Section con Cards de Acceso Rápido -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="patient-card" style="cursor: pointer;" onclick="window.location.href='@Url.Action("Index", "Cita")'">
+            <div style="text-align: center; padding: 1rem 0;">
+                <div style="font-size: 5rem; margin-bottom: 1rem;">📅</div>
+                <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.75rem; background: linear-gradient(135deg, #0066cc, #00a8e8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Citas Médicas
+                </h3>
+                <p style="color: #64748b; margin-bottom: 1.5rem;">
+                    Agenda, gestiona y controla todas las citas programadas del sistema
+                </p>
+                <a asp-controller="Cita" asp-action="Index" class="btn btn-primary w-100">
+                    Ver Citas →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="patient-card" style="cursor: pointer;" onclick="window.location.href='@Url.Action("Index", "Paciente")'">
+            <div style="text-align: center; padding: 1rem 0;">
+                <div style="font-size: 5rem; margin-bottom: 1rem;">👥</div>
+                <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.75rem; background: linear-gradient(135deg, #0066cc, #00a8e8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Pacientes
+                </h3>
+                <p style="color: #64748b; margin-bottom: 1.5rem;">
+                    Administra el registro completo de pacientes y su información
+                </p>
+                <a asp-controller="Paciente" asp-action="Index" class="btn btn-primary w-100">
+                    Ver Pacientes →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="patient-card" style="cursor: pointer;" onclick="window.location.href='@Url.Action("Index", "Medico")'">
+            <div style="text-align: center; padding: 1rem 0;">
+                <div style="font-size: 5rem; margin-bottom: 1rem;">👨‍⚕️</div>
+                <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.75rem; background: linear-gradient(135deg, #0066cc, #00a8e8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Personal Médico
+                </h3>
+                <p style="color: #64748b; margin-bottom: 1.5rem;">
+                    Gestiona médicos, especialidades y el equipo profesional
+                </p>
+                <a asp-controller="Medico" asp-action="Index" class="btn btn-primary w-100">
+                    Ver Médicos →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accesos Rápidos -->
+<div class="patient-card mb-4">
+    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #1e293b;">
+        ⚡ Accesos Rápidos
+    </h3>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <a asp-controller="Cita" asp-action="Create" class="btn btn-success w-100" style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">➕</div>
+                <div style="font-weight: 600;">Nueva Cita</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-controller="Paciente" asp-action="Create" class="btn btn-success w-100" style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                <div style="font-weight: 600;">Nuevo Paciente</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-controller="Medico" asp-action="Create" class="btn btn-success w-100" style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">👨‍⚕️</div>
+                <div style="font-weight: 600;">Nuevo Médico</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-controller="Cita" asp-action="Index" class="btn btn-info w-100" style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                <div style="font-weight: 600;">Ver Dashboard</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Características del Sistema -->
 <div class="row g-4">
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm hover-card">
-            <div class="card-body text-center">
-                <i class="bi bi-calendar-check display-1 text-primary mb-3"></i>
-                <h5 class="card-title">Gestión de Citas</h5>
-                <p class="card-text">Agenda y administra las citas médicas de tus pacientes</p>
-                <a asp-controller="Cita" asp-action="Index" class="btn btn-primary">
-                    <i class="bi bi-list-ul"></i> Ver Agenda
-                </a>
+    <div class="col-md-6">
+        <div class="patient-card">
+            <h4 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1.25rem; color: #1e293b;">
+                💡 Características Principales
+            </h4>
+            <div class="card-details">
+                <div class="detail-item">
+                    <span class="detail-icon">✅</span>
+                    <span class="detail-text"><strong>Gestión Integral:</strong> Control completo de citas, pacientes y médicos</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">🔍</span>
+                    <span class="detail-text"><strong>Búsqueda Avanzada:</strong> Filtra y encuentra información rápidamente</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📊</span>
+                    <span class="detail-text"><strong>Estadísticas en Tiempo Real:</strong> Visualiza métricas importantes</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">🎨</span>
+                    <span class="detail-text"><strong>Interfaz Moderna:</strong> Diseño intuitivo y fácil de usar</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">💾</span>
+                    <span class="detail-text"><strong>Persistencia de Datos:</strong> Información segura en JSON</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📱</span>
+                    <span class="detail-text"><strong>Responsive:</strong> Funciona en todos los dispositivos</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm hover-card">
-            <div class="card-body text-center">
-                <i class="bi bi-people display-1 text-success mb-3"></i>
-                <h5 class="card-title">Pacientes</h5>
-                <p class="card-text">Administra la información de tus pacientes registrados</p>
-                <a asp-controller="Paciente" asp-action="Index" class="btn btn-success">
-                    <i class="bi bi-list-ul"></i> Ver Pacientes
-                </a>
+    <div class="col-md-6">
+        <div class="patient-card">
+            <h4 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1.25rem; color: #1e293b;">
+                🚀 Comienza Ahora
+            </h4>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">
+                Sigue estos pasos para empezar a usar MediApp eficientemente:
+            </p>
+            <div class="card-details">
+                <div class="detail-item">
+                    <span style="background: linear-gradient(135deg, #0066cc, #00a8e8); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">1</span>
+                    <span class="detail-text">Registra los médicos del equipo</span>
+                </div>
+                <div class="detail-item">
+                    <span style="background: linear-gradient(135deg, #0066cc, #00a8e8); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">2</span>
+                    <span class="detail-text">Agrega los pacientes al sistema</span>
+                </div>
+                <div class="detail-item">
+                    <span style="background: linear-gradient(135deg, #0066cc, #00a8e8); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">3</span>
+                    <span class="detail-text">Programa las citas médicas</span>
+                </div>
+                <div class="detail-item">
+                    <span style="background: linear-gradient(135deg, #0066cc, #00a8e8); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">4</span>
+                    <span class="detail-text">Gestiona y controla todo desde un solo lugar</span>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm hover-card">
-            <div class="card-body text-center">
-                <i class="bi bi-heart-pulse display-1 text-danger mb-3"></i>
-                <h5 class="card-title">Médicos</h5>
-                <p class="card-text">Gestiona el personal médico y sus especialidades</p>
-                <a asp-controller="Medico" asp-action="Index" class="btn btn-danger">
-                    <i class="bi bi-list-ul"></i> Ver Médicos
+            <div class="mt-4">
+                <a asp-controller="Medico" asp-action="Create" class="btn btn-primary btn-lg w-100">
+                    🚀 Comenzar Ahora
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-    .hover-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .hover-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
-    }
-</style>
+<!-- Floating Tips -->
+<div class="mt-4 patient-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border-left: 4px solid #10b981;">
+    <div style="display: flex; align-items: start; gap: 1rem;">
+        <div style="font-size: 2.5rem;">💡</div>
+        <div>
+            <h5 style="font-weight: 700; margin-bottom: 0.5rem; color: #1e293b;">Consejo del Sistema</h5>
+            <p style="margin: 0; color: #64748b;">
+                Usa la barra de búsqueda en cada sección para encontrar rápidamente pacientes, médicos o citas. 
+                También puedes filtrar las citas por estado y fecha para una mejor organización.
+            </p>
+        </div>
+    </div>
+</div>

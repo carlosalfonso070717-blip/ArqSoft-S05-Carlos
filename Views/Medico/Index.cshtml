@@ -1,17 +1,124 @@
-@model List<Citas_App.Models.Medico>
-<h1>Médicos disponibles</h1>
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Nombre</th>
-        <th>Especialidad</th>
-        <th></th>
-    </tr>
-    @foreach (var m in Model)
-    {
-        <tr>
-            <td>@m.Nombre @m.Apellido</td>
-            <td>@m.Especialidad</td>
-            <td><a asp-action="Detalle" asp-route-id="@m.Id">Ver detalle</a></td>
-        </tr>
+@model IEnumerable<Citas_App.Models.Medico>
+@{
+    ViewData["Title"] = "Médicos";
+    var totalMedicos = Model.Count();
+    var especialidades = Model.Select(m => m.Especialidad).Distinct().Count();
+}
+
+<div class="page-header">
+    <h1>👨‍⚕️ Personal Médico</h1>
+    <p>Gestiona el equipo médico y sus especialidades</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓ ¡Éxito!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Estadísticas -->
+<div class="stats-container">
+    <div class="stat-card">
+        <span class="stat-card-icon">👨‍⚕️</span>
+        <h2 class="stat-card-value">@totalMedicos</h2>
+        <p class="stat-card-label">Médicos Activos</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">🏥</span>
+        <h2 class="stat-card-value">@especialidades</h2>
+        <p class="stat-card-label">Especialidades</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">⭐</span>
+        <h2 class="stat-card-value">100%</h2>
+        <p class="stat-card-label">Disponibilidad</p>
+    </div>
+</div>
+
+<!-- Barra de Búsqueda -->
+<div class="search-bar-container">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar médico por nombre, especialidad o licencia..." onkeyup="filterCards()">
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <!-- Grid de Cards de Médicos -->
+    <div class="cards-grid" id="doctorsGrid">
+        @foreach (var medico in Model)
+        {
+            <div class="doctor-card" data-search="@medico.Nombre.ToLower() @medico.Apellido.ToLower() @medico.Especialidad.ToLower() @medico.NumeroLicencia.ToLower()">
+                <div class="card-header-custom">
+                    <div class="card-avatar">
+                        👨‍⚕️
+                    </div>
+                    <div class="card-info">
+                        <h3 class="card-name">Dr. @medico.Nombre @medico.Apellido</h3>
+                        <p class="card-subtitle">@medico.Especialidad</p>
+                    </div>
+                </div>
+
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">🏥</span>
+                        <span class="detail-text">@medico.Especialidad</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">📋</span>
+                        <span class="detail-text">Licencia: @medico.NumeroLicencia</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🆔</span>
+                        <span class="detail-text">ID: #@medico.Id.ToString("D4")</span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a asp-action="Detalle" asp-route-id="@medico.Id" class="btn btn-info btn-sm flex-fill">
+                        👁️ Ver Perfil
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">👨‍⚕️</div>
+        <h3>No hay médicos registrados</h3>
+        <p>Agrega el primer médico al equipo</p>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            ➕ Registrar Primer Médico
+        </a>
+    </div>
+}
+
+<!-- Floating Action Button -->
+<a asp-action="Create" class="fab" title="Nuevo Médico">
+    ➕
+</a>
+
+@section Scripts {
+<script>
+    function filterCards() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const grid = document.getElementById('doctorsGrid');
+        const cards = grid.getElementsByClassName('doctor-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const searchData = cards[i].getAttribute('data-search');
+            if (searchData.indexOf(filter) > -1) {
+                cards[i].style.display = '';
+                cards[i].style.animation = 'fadeIn 0.3s ease';
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
     }
-</table>
+</script>
+}

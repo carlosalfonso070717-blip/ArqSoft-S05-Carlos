@@ -25,15 +25,12 @@ namespace Citas_App.Repositories
             }
             catch (JsonException ex)
             {
-                // Log el error y retornar lista vacía en caso de JSON corrupto
                 Console.WriteLine($"Error al deserializar citas.json: {ex.Message}");
-                // Opcional: Hacer backup del archivo corrupto
                 var backupPath = _filePath + ".corrupto";
                 if (File.Exists(_filePath))
                 {
                     File.Copy(_filePath, backupPath, true);
                 }
-                // Crear archivo nuevo con lista vacía
                 GuardarArchivo(new List<Cita>());
                 return new List<Cita>();
             }
@@ -49,5 +46,13 @@ namespace Citas_App.Repositories
 
         public List<Cita> ObtenerPorPaciente(int pacienteId) => 
             LeerArchivo().Where(c => c.PacienteId == pacienteId).ToList();
+
+        public void Agregar(Cita cita)
+        {
+            var citas = LeerArchivo();
+            cita.Id = citas.Any() ? citas.Max(c => c.Id) + 1 : 1;
+            citas.Add(cita);
+            GuardarArchivo(citas);
+        }
     }
 }

@@ -1,19 +1,119 @@
-@model List<Citas_App.Models.Paciente>
-<h1>Pacientes registrados</h1>
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-        <th></th>
-    </tr>
-    @foreach (var p in Model)
-    {
-        <tr>
-            <td>@p.Nombre @p.Apellido</td>
-            <td>@p.Email</td>
-            <td>@p.Telefono</td>
-            <td><a asp-action="Detalle" asp-route-id="@p.Id">Ver detalle</a></td>
-        </tr>
+@model IEnumerable<Citas_App.Models.Paciente>
+@{
+    ViewData["Title"] = "Pacientes";
+    var totalPacientes = Model.Count();
+}
+
+<div class="page-header">
+    <h1>👥 Gestión de Pacientes</h1>
+    <p>Administra y visualiza todos los pacientes registrados en el sistema</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓ ¡Éxito!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Estadísticas -->
+<div class="stats-container">
+    <div class="stat-card">
+        <span class="stat-card-icon">👥</span>
+        <h2 class="stat-card-value">@totalPacientes</h2>
+        <p class="stat-card-label">Pacientes Registrados</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">📊</span>
+        <h2 class="stat-card-value">@(totalPacientes > 0 ? "100%" : "0%")</h2>
+        <p class="stat-card-label">Base de Datos</p>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-icon">✅</span>
+        <h2 class="stat-card-value">Activo</h2>
+        <p class="stat-card-label">Estado del Sistema</p>
+    </div>
+</div>
+
+<!-- Barra de Búsqueda -->
+<div class="search-bar-container">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar paciente por nombre, email o teléfono..." onkeyup="filterCards()">
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <!-- Grid de Cards de Pacientes -->
+    <div class="cards-grid" id="patientsGrid">
+        @foreach (var paciente in Model)
+        {
+            <div class="patient-card" data-search="@paciente.Nombre.ToLower() @paciente.Apellido.ToLower() @paciente.Email.ToLower() @paciente.Telefono.ToLower()">
+                <div class="card-header-custom">
+                    <div class="card-avatar">
+                        👤
+                    </div>
+                    <div class="card-info">
+                        <h3 class="card-name">@paciente.Nombre @paciente.Apellido</h3>
+                        <p class="card-subtitle">ID: #@paciente.Id.ToString("D4")</p>
+                    </div>
+                </div>
+
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">📧</span>
+                        <span class="detail-text">@paciente.Email</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">📱</span>
+                        <span class="detail-text">@paciente.Telefono</span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a asp-action="Detalle" asp-route-id="@paciente.Id" class="btn btn-info btn-sm flex-fill">
+                        👁️ Ver Detalles
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">👤</div>
+        <h3>No hay pacientes registrados</h3>
+        <p>Comienza agregando tu primer paciente al sistema</p>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            ➕ Registrar Primer Paciente
+        </a>
+    </div>
+}
+
+<!-- Floating Action Button -->
+<a asp-action="Create" class="fab" title="Nuevo Paciente">
+    ➕
+</a>
+
+@section Scripts {
+<script>
+    function filterCards() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const grid = document.getElementById('patientsGrid');
+        const cards = grid.getElementsByClassName('patient-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const searchData = cards[i].getAttribute('data-search');
+            if (searchData.indexOf(filter) > -1) {
+                cards[i].style.display = '';
+                cards[i].style.animation = 'fadeIn 0.3s ease';
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
     }
-</table>
+</script>
+}

@@ -46,11 +46,6 @@ El sistema cuenta con una interfaz moderna y intuitiva con diseño glassmorphism
 
 ---
 
-##  Estructura del Proyecto
-Citas_App/ ├── Controllers/           # Controladores MVC │   ├── CitaController.cs │   ├── MedicoController.cs │   ├── PacienteController.cs │   └── HomeController.cs ├── Models/               # Modelos de datos │   ├── Cita.cs │   ├── Medico.cs │   └── Paciente.cs ├── Repositories/         # Capa de acceso a datos │   ├── CitaRepository.cs │   ├── MedicoRepository.cs │   └── PacienteRepository.cs ├── Interfaces/           # Contratos de repositorios │   ├── ICitaRepository.cs │   ├── IMedicoRepository.cs │   └── IPacienteRepository.cs ├── Views/                # Vistas Razor │   ├── Cita/ │   │   ├── Index.cshtml │   │   └── Create.cshtml │   ├── Medico/ │   │   ├── Index.cshtml │   │   ├── Create.cshtml │   │   └── Detalle.cshtml │   ├── Paciente/ │   │   ├── Index.cshtml │   │   ├── Create.cshtml │   │   └── Detalle.cshtml │   ├── Home/ │   │   └── Index.cshtml │   └── Shared/ │       └── _Layout.cshtml ├── wwwroot/              # Archivos estáticos │   └── css/ │       └── site.css      # Estilos personalizados (600+ líneas) ├── Data/                 # Almacenamiento JSON │   ├── pacientes.json │   ├── medicos.json │   └── citas.json └── Program.cs            # Configuración de la aplicación
-
----
-
 ## 📸 Capturas de Pantalla
 
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/7c1b217a-1a8c-4033-8c5f-a5f7d6be536a" />

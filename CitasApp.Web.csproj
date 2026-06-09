@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Data\**\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\CitasApp.Infrastructure\CitasApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\CitassApp.Domain\CitasApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

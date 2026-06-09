@@ -1,8 +1,8 @@
-@model IEnumerable<Citas_App.Models.Cita>
+@model IEnumerable<CitasApp.Domain.Models.Cita>
 @{
     ViewData["Title"] = "Citas";
-    var pacientes = ViewBag.Pacientes as List<Citas_App.Models.Paciente>;
-    var medicos = ViewBag.Medicos as List<Citas_App.Models.Medico>;
+    var pacientes = ViewBag.Pacientes as List<CitasApp.Domain.Models.Paciente>;
+    var medicos = ViewBag.Medicos as List<CitasApp.Domain.Models.Medico>;
     var totalCitas = Model.Count();
     var citasPendientes = Model.Count(c => c.Estado == "Pendiente");
     var citasConfirmadas = Model.Count(c => c.Estado == "Confirmada");

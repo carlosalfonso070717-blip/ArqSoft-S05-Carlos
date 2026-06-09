@@ -1,15 +1,25 @@
-using Citas_App.Interfaces;
-using Citas_App.Repositories;
+using CitasApp.Domain.Interfaces;
+using CitasApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Registrar los repositorios con inyección de dependencias
-builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
-builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
-builder.Services.AddScoped<ICitaRepository, CitaRepository>();
+// Configurar la ruta base de datos
+var dataPath = Path.Combine(builder.Environment.ContentRootPath, "Data");
+if (!Directory.Exists(dataPath))
+{
+    Directory.CreateDirectory(dataPath);
+}
+
+// Registrar los repositorios con inyección de dependencias pasando la ruta
+builder.Services.AddScoped<IPacienteRepository>(provider => 
+    new PacienteRepository(dataPath));
+builder.Services.AddScoped<IMedicoRepository>(provider => 
+    new MedicoRepository(dataPath));
+builder.Services.AddScoped<ICitaRepository>(provider => 
+    new CitaRepository(dataPath));
 
 var app = builder.Build();
 

@@ -1,8 +1,8 @@
-using Citas_App.Interfaces;
-using Citas_App.Models;
+using CitasApp.Domain.Interfaces;
+using CitasApp.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Citas_App.Controllers
+namespace CitasApp.Web.Controllers
 {
     public class PacienteController : Controller
     {

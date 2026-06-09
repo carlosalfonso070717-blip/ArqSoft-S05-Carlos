@@ -1,8 +1,8 @@
-@model Citas_App.Models.Cita
+@model CitasApp.Domain.Models.Cita
 @{
     ViewData["Title"] = "Nueva Cita";
-    var pacientes = ViewBag.Pacientes as List<Citas_App.Models.Paciente>;
-    var medicos = ViewBag.Medicos as List<Citas_App.Models.Medico>;
+    var pacientes = ViewBag.Pacientes as List<CitasApp.Domain.Models.Paciente>;
+    var medicos = ViewBag.Medicos as List<CitasApp.Domain.Models.Medico>;
 }
 
 <div class="page-header">

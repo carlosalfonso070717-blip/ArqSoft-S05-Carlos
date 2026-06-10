@@ -43,21 +43,6 @@ El sistema cuenta con una interfaz moderna y intuitiva con diseño glassmorphism
 -  **MVC Pattern**: Separación clara de responsabilidades
 -  **Manejo de Excepciones**: Try-catch con backup automático de datos corruptos
 -  **Validación de Datos**: Data Annotations y validación del lado del servidor
-
-## Prueba de Arquitectura Hexagonal: Cambio de Adaptadores
-
-Este proyecto fue diseñado siguiendo los principios de la Arquitectura Hexagonal. Esto nos permite cambiar la infraestructura como la base de datos o el formato de almacenamiento sin necesidad de alterar la lógica de negocio ni la interfaz de usuario.
-
-### Demostración: Cambio entre JSON y CSV
-
-Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de datos de archivos JSON a archivos CSV con solo modificar la inyección de dependencias.
-
-**Instrucciones para la prueba:**
-1. Navega al archivo `Program.cs` en el proyecto `CitasApp.Web`.
-2. Localiza la sección de registro de repositorios.
-3. Para usar **JSON**, asegúrate de tener descomentado el bloque correspondiente a `PacienteRepository`, `MedicoRepository` y `CitaRepository`.
-4. Para cambiar a **CSV**, comenta el bloque anterior y descomenta el bloque que inyecta `CsvPacienteRepository`, `CsvMedicoRepository` y `CsvCitaRepository`.
-5. Ejecuta la aplicación y notarás sigue funcionando de manera idéntica, pero ahora lee y escribe información desde los archivos `.csv` ubicados en la carpeta `Data`, demostrando el desacoplamiento total de la infraestructura.
 ---
 
 ## 📸 Capturas de Pantalla

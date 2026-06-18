@@ -74,6 +74,13 @@ Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de
 <img width="1822" height="989" alt="image" src="https://github.com/user-attachments/assets/d686947a-f951-4216-8c7f-71f00711e2be" />
 
 
+<img width="1918" height="1192" alt="Captura de pantalla 2026-06-16 124519" src="https://github.com/user-attachments/assets/cc46392e-f402-4c5b-922d-3d86f5bd5b1a" />
+
+
+<img width="1918" height="1198" alt="Captura de pantalla 2026-06-16 130041" src="https://github.com/user-attachments/assets/09b7e634-5071-4df1-86ce-e227d17078d8" />
+
+
+
 
 
 ---
@@ -108,5 +115,8 @@ Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de
 - Cards interactivas con efectos hover
 - Guía de inicio rápido
 - Consejos del sistema
+
+### APIs
+En esta nueva actualización del sistema se implementó el uso y cconexión de nuestro programa a una API, esto de manera externa, lo hicimos con una calculadora la cual se conectaba por terminal al puerto que levantamos en nuestro proyecto y tambien lo hicimos con la persistencia de nuestero proyecto donde nos conectamos al puerto levantado y desde la terminal podemos hacer peticiones para ver los médicos, pacientes, citas, así como buscarlos específicamente por ID
 
 ---

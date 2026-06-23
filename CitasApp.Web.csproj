@@ -7,12 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CitasApp.Api\**" />
+    <Compile Remove="CitasApp.Application\**" />
+    <Compile Remove="CitasApp.Infrastructure\**" />
+    <Compile Remove="CitassApp.Domain\**" />
+    <Content Remove="CitasApp.Api\**" />
+    <Content Remove="CitasApp.Application\**" />
+    <Content Remove="CitasApp.Infrastructure\**" />
+    <Content Remove="CitassApp.Domain\**" />
+    <EmbeddedResource Remove="CitasApp.Api\**" />
+    <EmbeddedResource Remove="CitasApp.Application\**" />
+    <EmbeddedResource Remove="CitasApp.Infrastructure\**" />
+    <EmbeddedResource Remove="CitassApp.Domain\**" />
+    <None Remove="CitasApp.Api\**" />
+    <None Remove="CitasApp.Application\**" />
+    <None Remove="CitasApp.Infrastructure\**" />
+    <None Remove="CitassApp.Domain\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CitasApp.Infrastructure\CitasApp.Infrastructure.csproj" />
     <ProjectReference Include="..\CitassApp.Domain\CitasApp.Domain.csproj" />
+    <ProjectReference Include="CitasApp.Infrastructure\CitasApp.Infrastructure.csproj" />
+    <ProjectReference Include="CitassApp.Domain\CitasApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

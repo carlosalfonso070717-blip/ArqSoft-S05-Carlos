@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq; // 🧠 Nuevo: Para buscar la cita por ID dentro del IEnumerable
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CitasApp.Domain.Interfaces;
-using CitasApp.Domain.Models; // Mantenemos tus modelos tal como los tenías
+using CitasApp.Domain.Models;
 
 namespace CitasApp.Application.Services
 {
     public class CitaService
     {
         private readonly ICitaRepository _repository;
-        private readonly IEnumerable<ICitaObserver> _observers; // ── NUEVO: Lista de observadores desacoplados
+        private readonly IEnumerable<ICitaObserver> _observers;
 
-        // MODIFICADO: El constructor ahora recibe el repositorio y TODOS los observadores registrados en Program.cs
+        // El constructor recibe el repositorio de citas y TODOS los observadores (Sms, Email) inyectados desde Program.cs
         public CitaService(ICitaRepository repository, IEnumerable<ICitaObserver> observers)
         {
             _repository = repository;
@@ -27,27 +28,30 @@ namespace CitasApp.Application.Services
             return _repository.ObtenerPorPaciente(pacienteId);
         }
 
-        // ── NUEVO: Método requerido para resolver el Reto Observer ──────────────
-        public void ConfirmarCita(int citaId)
+        // ── El método clave del patrón Observer ────────────────────────────────
+        public Cita ConfirmarCita(int citaId)
         {
-            // 1. Buscamos la cita usando de forma segura tu método ObtenerTodos()
+            // 1. Buscamos la cita por su ID utilizando el repositorio
             var cita = _repository.ObtenerTodos().FirstOrDefault(c => c.Id == citaId);
 
             if (cita != null)
             {
-                // 2. Ejecutas la actualización de estado si tu modelo Cita maneja la propiedad
-                // cita.Confirmada = true;
+                // 2. Pintamos en la consola el log principal de confirmación con la hora del sistema
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                Console.WriteLine($"[{timestamp}] Cita {cita.Id} confirmada");
 
-                // Si tu interfaz ICitaRepository cuenta con método para persistir el cambio, lo llamas aquí:
-                // _repository.Actualizar(cita);
+                // 3. Actualizamos el estado de la cita usando la propiedad real de tu Cita.cs
+                cita.Estado = "Confirmada";
 
-                // 3. NOTIFICACIÓN REACTIVA: Avisamos a cada observador registrado (SMS, Email, etc.)
-                // Recuerda que aquí se ejecutan sin que Application conozca las clases de Infraestructura.
+                // 4. NOTIFICACIÓN REACTIVA: Avisamos a cada observador registrado (SMS y Email)
                 foreach (var observer in _observers)
                 {
                     observer.Notificar(cita);
                 }
             }
+
+            // Retornamos el objeto cita (con su estado actualizado) al controlador
+            return cita;
         }
     }
 }

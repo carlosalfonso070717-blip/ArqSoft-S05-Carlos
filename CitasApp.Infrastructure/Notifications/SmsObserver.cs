@@ -8,7 +8,7 @@ namespace CitasApp.Infrastructure.Notifications
     {
         public void Notificar(Cita cita)
         {
-            Console.WriteLine($"[SMS] Enviado: La cita {cita.Id} ha sido confirmada.");
+            Console.WriteLine($"[SMS] Recordatorio enviado al paciente {cita.PacienteId} - cita el {cita.Fecha.ToString("dd/MM/yyyy")} a las {cita.Hora.ToString(@"hh\:mm")}");
         }
     }
 }

@@ -1,6 +1,10 @@
-﻿using CitasApp.Domain.Interfaces;
-using CitasApp.Domain.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
+using CitasApp.Domain.Interfaces;
+using CitasApp.Domain.Models;
 
 namespace CitasApp.Infrastructure.Repositories
 {
@@ -10,99 +14,52 @@ namespace CitasApp.Infrastructure.Repositories
 
         public JsonMedicoRepository()
         {
-            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Medicos.json");
+
+            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "medicos.json");
+
+            CrearJsonSiNoExiste();
         }
-        public IEnumerable<Medico> ObtenerTodos()
+
+        public List<Medico> ObtenerTodos()
         {
             try
             {
-                if (!File.Exists(_filePath))
-                    return Enumerable.Empty<Medico>();
+                if (!File.Exists(_filePath)) return new List<Medico>();
 
                 var json = File.ReadAllText(_filePath);
-                var medicos = JsonSerializer.Deserialize<List<Medico>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-                    ?? new List<Medico>();
-
-                return medicos;
+                return JsonSerializer.Deserialize<List<Medico>>(json) ?? new List<Medico>();
             }
             catch
             {
-                return Enumerable.Empty<Medico>();
+                return new List<Medico>();
             }
         }
 
         public Medico ObtenerPorId(int id)
         {
-            var medicos = ObtenerTodos();
-            return medicos.FirstOrDefault(m => m.Id == id) ?? new Medico();
+            return ObtenerTodos().FirstOrDefault(m => m.Id == id)!;
         }
 
         public void Agregar(Medico medico)
         {
-            try
-            {
-                var medicos = ObtenerTodos().ToList();
-                medico.Id = medicos.Count > 0 ? medicos.Max(m => m.Id) + 1 : 1;
-                medicos.Add(medico);
-
-                var options = new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true };
-                var json = JsonSerializer.Serialize(medicos, options);
-                File.WriteAllText(_filePath, json);
-            }
-            catch
-            {
-                // Manejo de error silencioso
-            }
+            var lista = ObtenerTodos();
+            lista.Add(medico);
+            File.WriteAllText(_filePath, JsonSerializer.Serialize(lista, new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        public void Editar(Medico medico)
+        private void CrearJsonSiNoExiste()
         {
-            try
+            if (!File.Exists(_filePath))
             {
-                var medicos = ObtenerTodos().ToList();
-                var medicoExistente = medicos.FirstOrDefault(m => m.Id == medico.Id);
-                if (medicoExistente != null)
+                // Nota: Si tus propiedades de Medico se llaman diferente (ej. NombreMedico o Especialidad), adáptalas aquí
+                var dePrueba = new List<Medico>
                 {
-                    medicoExistente.Nombre = medico.Nombre;
-                    medicoExistente.Apellido = medico.Apellido;
-                    medicoExistente.Especialidad = medico.Especialidad;
-                    medicoExistente.NumeroLicencia = medico.NumeroLicencia;
-
-                    var options = new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true };
-                    var json = JsonSerializer.Serialize(medicos, options);
-                    File.WriteAllText(_filePath, json);
-                }
+                    new Medico { Id = 1, Nombre = "Dr. Jorge Torres" },
+                    new Medico { Id = 2, Nombre = "Dra. Alejandra Inzunza" },
+                    new Medico { Id = 3, Nombre = "Dr. Ricardo Ancona" }
+                };
+                File.WriteAllText(_filePath, JsonSerializer.Serialize(dePrueba, new JsonSerializerOptions { WriteIndented = true }));
             }
-            catch
-            {
-                // Manejo de error silencioso
-            }
-        }
-
-        public void Eliminar(int id)
-        {
-            try
-            {
-                var medicos = ObtenerTodos().ToList();
-                var medico = medicos.FirstOrDefault(m => m.Id == id);
-                if (medico != null)
-                {
-                    medicos.Remove(medico);
-
-                    var options = new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true };
-                    var json = JsonSerializer.Serialize(medicos, options);
-                    File.WriteAllText(_filePath, json);
-                }
-            }
-            catch
-            {
-                // Manejo de error silencioso
-            }
-        }
-
-        List<Medico> IMedicoRepository.ObtenerTodos()
-        {
-            throw new NotImplementedException();
         }
     }
 }

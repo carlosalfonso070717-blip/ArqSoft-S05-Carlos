@@ -8,7 +8,7 @@ namespace CitasApp.Infrastructure.Notifications
     {
         public void Notificar(Cita cita)
         {
-            Console.WriteLine($"[EMAIL] Enviado: Correo de confirmación para la cita {cita.Id}.");
+            Console.WriteLine($"[EMAIL] Confirmación enviada al paciente {cita.PacienteId} - motivo: {cita.Motivo} - estado: Confirmada");
         }
     }
 }

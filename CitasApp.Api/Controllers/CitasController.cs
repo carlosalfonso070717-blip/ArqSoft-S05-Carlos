@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CitasApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/citas")]
     public class CitasController : ControllerBase
     {
         private readonly CitaService _citaService;
@@ -28,6 +28,21 @@ namespace CitasApp.Api.Controllers
         {
             var citas = _citaService.ObtenerPorPaciente(pacienteId);
             return citas.Count == 0 ? NotFound() : Ok(citas);
+        }
+
+        // ── NUEVO: El endpoint POST para cumplir con el Reto ──────────────────
+        [HttpPost("confirmar/{id}")]
+        public IActionResult ConfirmarCita(int id)
+        {
+            // 1. Llama a tu servicio que dispara los observadores (Sms y Email)
+            _citaService.ConfirmarCita(id);
+
+            // 2. Retorna la respuesta en formato JSON que espera el profesor
+            return Ok(new
+            {
+                mensaje = "Cita confirmada",
+                id = id
+            });
         }
     }
 }

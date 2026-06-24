@@ -80,8 +80,7 @@ Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de
 <img width="1918" height="1198" alt="Captura de pantalla 2026-06-16 130041" src="https://github.com/user-attachments/assets/09b7e634-5071-4df1-86ce-e227d17078d8" />
 
 
-
-
+<img width="1918" height="1198" alt="Captura de pantalla 2026-06-23 143900" src="https://github.com/user-attachments/assets/c0dd060a-28c9-4344-be41-59466195f25b" />
 
 ---
 
@@ -119,4 +118,25 @@ Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de
 ### APIs
 En esta nueva actualización del sistema se implementó el uso y cconexión de nuestro programa a una API, esto de manera externa, lo hicimos con una calculadora la cual se conectaba por terminal al puerto que levantamos en nuestro proyecto y tambien lo hicimos con la persistencia de nuestero proyecto donde nos conectamos al puerto levantado y desde la terminal podemos hacer peticiones para ver los médicos, pacientes, citas, así como buscarlos específicamente por ID
 
+### Patrones de Diseño GoF Aplicados
+
+Para cumplir con la arquitectura limpia y asegurar el desacoplamiento entre las capas de nuestra aplicación, se implementaron tres patrones de diseño fundamentales del Gang of Four (GoF):
+
+### 1. Factory Method (Creacional)
+* **Ubicación:** `CitasApp.Infrastructure.Repositories.RepositoryFactory`
+* **Propósito:** Se encarga de la creación dinámica de las instancias de los repositorios de pacientes según el entorno de ejecución del sistema. 
+* **Aplicación:** Si el entorno es `Production`, la factoría instancia el repositorio principal basado en archivos físicos de datos (`PacienteRepository`). Si el entorno es `Development`, genera automáticamente la persistencia basada en formato ligero (`JsonPacienteRepository`).
+
+### 2. Decorator (Estructural)
+* **Ubicación:** `CitasApp.Infrastructure.Repositories.LoggingPacienteRepository`
+* **Propósito:** Permite añadir responsabilidades y comportamientos adicionales (en este caso, auditoría y logs en consola) a un objeto de forma dinámica sin modificar su estructura original ni alterar la interfaz.
+* **Aplicación:** Envuelve (`wraps`) de manera transparente al repositorio de pacientes seleccionado por la factoría. Cada vez que la aplicación llama a un método como `ObtenerTodos()` u `ObtenerPorId()`, el decorador intercepta la petición, imprime la marca de tiempo en la terminal y ejecuta la lógica base del repositorio.
+
+### 3. Observer (Comportamiento)
+* **Ubicación:** `CitasApp.Domain.Interfaces.ICitaObserver`, `SmsObserver` y `EmailObserver`
+* **Propósito:** Define una dependencia de uno a muchos entre objetos, de forma que cuando el objeto principal cambia su estado, todos sus dependientes son notificados de manera automática y reactiva.
+* **Aplicación:** Se aplicó al flujo de confirmación de citas. El servicio `CitaService` no conoce la existencia de los servicios de SMS o Correo Electrónico; simplemente maneja una lista abstracta de observadores. Al invocar `ConfirmarCita()`, se dispara una notificación en cadena donde cada observador reacciona imprimiendo su respectiva alerta en la consola.
+
+### Declaración de IA
+El uso de IA en este trabajo se limitó a solución de errores y arreglo de algunos códigos.
 ---

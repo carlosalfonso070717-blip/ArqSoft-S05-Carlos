@@ -1,78 +1,34 @@
-# Arquitectura y Patrones de Diseño - CitasApp
+# Diagramas del Sistema - CitasApp
 
-A continuación se presenta el diagrama de clases del estado actual del proyecto, destacando la implementación de los patrones **Factory**, **Decorator** y **Observer** respetando la Arquitectura Hexagonal.
+A continuación se presentan los tres diagramas solicitados para ilustrar el funcionamiento y la estructura de la aplicación.
+
+## 1. Diagrama de Clases (Entidades)
+**¿Qué entidades hay y cómo se relacionan?**
+Este diagrama se enfoca exclusivamente en las entidades de dominio principales: `Paciente`, `Medico` y `Cita`. Muestra cómo la cita actúa como el puente que relaciona a un paciente con su médico.
 
 ```mermaid
 classDiagram
-    %% Capa de Dominio (Entidades e Interfaces)
-    namespace Domain {
-        class Cita {
-            +int Id
-            +int PacienteId
-            +int MedicoId
-            +DateTime Fecha
-            +TimeSpan Hora
-            +string Motivo
-            +string Estado
-        }
-        
-        class ICitaObserver {
-            <<interface>>
-            +Notificar(Cita cita)
-        }
-        
-        class IPacienteRepository {
-            <<interface>>
-            +ObtenerTodos() List~Paciente~
-            +ObtenerPorId(int id) Paciente
-            +Agregar(Paciente paciente)
-        }
+    class Paciente {
+        +int Id
+        +string Nombre
+        +int Edad
+    }
+    
+    class Medico {
+        +int Id
+        +string Nombre
+    }
+    
+    class Cita {
+        +int Id
+        +int PacienteId
+        +int MedicoId
+        +DateTime Fecha
+        +TimeSpan Hora
+        +string Motivo
+        +string Estado
     }
 
-    %% Capa de Aplicación (Casos de uso)
-    namespace Application {
-        class CitaService {
-            -ICitaRepository _repository
-            -IEnumerable~ICitaObserver~ _observers
-            +ConfirmarCita(int citaId) Cita
-        }
-    }
-
-    %% Capa de Infraestructura (Implementaciones)
-    namespace Infrastructure {
-        class SmsObserver {
-            +Notificar(Cita cita)
-        }
-        class EmailObserver {
-            +Notificar(Cita cita)
-        }
-        
-        class LoggingPacienteRepository {
-            -IPacienteRepository _innerRepository
-            +ObtenerTodos() List~Paciente~
-            +ObtenerPorId(int id) Paciente
-        }
-        
-        class RepositoryFactory {
-            <<static>>
-            +CrearPacienteRepository(string entorno, IWebHostEnvironment env) IPacienteRepository
-        }
-        
-        class JsonPacienteRepository {
-            +ObtenerTodos() List~Paciente~
-            +ObtenerPorId(int id) Paciente
-        }
-    }
-
-    %% Relaciones del Patrón Observer
-    ICitaObserver <|.. SmsObserver : Implementa
-    ICitaObserver <|.. EmailObserver : Implementa
-    CitaService o-- ICitaObserver : Contiene / Notifica
-
-    %% Relaciones del Patrón Decorator
-    IPacienteRepository <|.. LoggingPacienteRepository : Implementa
-    LoggingPacienteRepository o-- IPacienteRepository : Envuelve (Wraps)
-
-    %% Relaciones del Patrón Factory
-    RepositoryFactory ..> IPacienteRepository : Crea
-    IPacienteRepository <|.. JsonPacienteRepository : Implementa
+    %% Relaciones
+    Paciente "1" <-- "*" Cita : Tiene
+    Medico "1" <-- "*" Cita : Atiende

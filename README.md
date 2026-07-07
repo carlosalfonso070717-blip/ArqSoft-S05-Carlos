@@ -83,6 +83,8 @@ Para comprobar la flexibilidad de la arquitectura, se puede cambiar el origen de
 
 
 
+### Diagrama
+https://github.com/carlosalfonso070717-blip/ArqSoft-S05-Carlos/blob/uml/arquitectura.md
 ---
 
 ##  Funcionalidades Detalladas

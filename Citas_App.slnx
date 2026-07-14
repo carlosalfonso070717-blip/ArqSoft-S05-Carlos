@@ -4,7 +4,7 @@
   </Folder>
   <Project Path="CitasApp.Api/CitasApp.Api.csproj" />
   <Project Path="CitasApp.Application/CitasApp.Application.csproj" />
+  <Project Path="CitasApp.Domain/CitasApp.Domain.csproj" />
   <Project Path="CitasApp.Infrastructure/CitasApp.Infrastructure.csproj" />
-  <Project Path="CitasApp.Web.csproj" />
-  <Project Path="CitassApp.Domain/CitasApp.Domain.csproj" />
+  <Project Path="CitasApp.Web/CitasApp.Web.csproj" />
 </Solution>

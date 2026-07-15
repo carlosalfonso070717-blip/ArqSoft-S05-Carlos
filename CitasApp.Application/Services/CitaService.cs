@@ -43,7 +43,7 @@ namespace CitasApp.Application.Services
                 // 3. Actualizamos el estado de la cita usando la propiedad real de tu Cita.cs
                 cita.Estado = "Confirmada";
 
-                // 4. NOTIFICACIÓN REACTIVA: Avisamos a cada observador registrado (SMS y Email)
+                // 4. NOTIFCACIÓN REACTIVA: Avisamos a cada observador registrado (SMS y Email)
                 foreach (var observer in _observers)
                 {
                     observer.Notificar(cita);

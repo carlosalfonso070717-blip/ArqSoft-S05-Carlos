@@ -6,44 +6,23 @@ namespace CitasApp.Infrastructure.Repositories
 {
     public class CitaRepository : ICitaRepository
     {
-        private readonly string _filePath;
+        private readonly JsonStorageManager _storage;
 
-        public CitaRepository(string dataPath)
+        public CitaRepository(JsonStorageManager storage)
         {
-            _filePath = Path.Combine(dataPath, "citas.json");
+            _storage = storage;
         }
 
-        private List<Cita> LeerArchivo()
-        {
-            if (!File.Exists(_filePath)) return new List<Cita>();
-            try
-            {
-                var json = File.ReadAllText(_filePath);
-                return JsonSerializer.Deserialize<List<Cita>>(json) ?? new List<Cita>();
-            }
-            catch (JsonException)
-            {
-                GuardarArchivo(new List<Cita>());
-                return new List<Cita>();
-            }
-        }
-
-        private void GuardarArchivo(List<Cita> citas)
-        {
-            var json = JsonSerializer.Serialize(citas, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(_filePath, json);
-        }
-
-        public List<Cita> ObtenerTodos() => LeerArchivo();
-        public Cita? ObtenerPorId(int id) => LeerArchivo().FirstOrDefault(c => c.Id == id);
+        public List<Cita> ObtenerTodos() => _storage.Leer();
+        public Cita? ObtenerPorId(int id) => _storage.Leer().FirstOrDefault(c => c.Id == id);
         public void Agregar(Cita cita)
         {
-            var citas = LeerArchivo();
+            var citas = _storage.Leer();
             cita.Id = citas.Any() ? citas.Max(c => c.Id) + 1 : 1;
             citas.Add(cita);
-            GuardarArchivo(citas);
+            _storage.Guardar(citas);
         }
 
-        public List<Cita> ObtenerPorPaciente(int pacienteId) => LeerArchivo().Where(c => c.PacienteId == pacienteId).ToList();
+        public List<Cita> ObtenerPorPaciente(int pacienteId) => _storage.Leer().Where(c => c.PacienteId == pacienteId).ToList();
     }
 }

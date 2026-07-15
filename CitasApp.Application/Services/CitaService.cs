@@ -31,27 +31,31 @@ namespace CitasApp.Application.Services
         // ── El método clave del patrón Observer ────────────────────────────────
         public Cita ConfirmarCita(int citaId)
         {
-            // 1. Buscamos la cita por su ID utilizando el repositorio
             var cita = _repository.ObtenerTodos().FirstOrDefault(c => c.Id == citaId);
 
             if (cita != null)
             {
-                // 2. Pintamos en la consola el log principal de confirmación con la hora del sistema
-                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                Console.WriteLine($"[{timestamp}] Cita {cita.Id} confirmada");
+                RegistrarLogConfirmacion(cita);
 
-                // 3. Actualizamos el estado de la cita usando la propiedad real de tu Cita.cs
                 cita.Estado = "Confirmada";
 
-                // 4. NOTIFCACIÓN REACTIVA: Avisamos a cada observador registrado (SMS y Email)
-                foreach (var observer in _observers)
-                {
-                    observer.Notificar(cita);
-                }
+                NotificarObservadores(cita);
             }
 
-            // Retornamos el objeto cita (con su estado actualizado) al controlador
             return cita;
+        }
+        private void RegistrarLogConfirmacion(Cita cita)
+        {
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            Console.WriteLine($"[{timestamp}] Cita {cita.Id} confirmada");
+        }
+
+        private void NotificarObservadores(Cita cita)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.Notificar(cita);
+            }
         }
     }
 }

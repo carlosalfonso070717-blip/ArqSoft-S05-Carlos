@@ -11,7 +11,7 @@ namespace CitasApp.Application.Services
         private readonly ICitaRepository _repository;
         private readonly IEnumerable<ICitaObserver> _observers;
 
-        // El constructor recibe el repositorio de citas y TODOS los observadores (Sms, Email) inyectados desde Program.cs
+        // El costructor recibe el repositorio de citas y TODOS los observadores (Sms, Email) inyectados desde Program.cs
         public CitaService(ICitaRepository repository, IEnumerable<ICitaObserver> observers)
         {
             _repository = repository;

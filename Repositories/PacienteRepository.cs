@@ -9,8 +9,13 @@ namespace Citas_App.Repositories
         private readonly string _filePath;
 
         public PacienteRepository()
+            : this(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "pacientes.json"))
         {
-            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "pacientes.json");
+        }
+
+        public PacienteRepository(string filePath)
+        {
+            _filePath = filePath;
         }
 
         private List<Paciente> LeerArchivo()

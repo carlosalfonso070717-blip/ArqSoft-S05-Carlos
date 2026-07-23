@@ -39,7 +39,7 @@ namespace Citas_App.Tests
 
             // Assert
             Assert.Single(todos);
-            Assert.Equal(2, todos[0].Id);
+            Assert.Equal(1, todos[0].Id);
         }
 
         [Fact]

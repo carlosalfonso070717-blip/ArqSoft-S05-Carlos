@@ -12,4 +12,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Citas_App.Tests\**\*.cs" />
+    <Content Remove="Citas_App.Tests\**\*" />
+    <None Remove="Citas_App.Tests\**\*" />
+  </ItemGroup>
+
 </Project>

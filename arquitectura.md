@@ -1,6 +1,6 @@
 # Arquitectura y Patrones de Diseño - CitasApp
 
-A continuación se presenta el diagrama de clases del estado actual del proyecto, destacando la implementación de los patrones **Factory**, **Decorator** y **Observer** respetando la Arquitectura Hexagonal.
+A continuación se presenta el diagrama de clases del estado actual de este proyecto, destacando la implementación de los patrones **Factory**, **Decorator** y **Observer** respetando la Arquitectura Hexagonal.
 
 ```mermaid
 classDiagram
